@@ -34,4 +34,5 @@ public class Card {
 
     @Column(nullable = false)
     Double balance;
+
 }

@@ -9,7 +9,7 @@ import lombok.experimental.FieldDefaults;
 import java.util.List;
 
 @Entity
-@Table(name="user")
+@Table(name="users")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Getter
 @Setter

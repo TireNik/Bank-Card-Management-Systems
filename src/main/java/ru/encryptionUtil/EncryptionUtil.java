@@ -28,8 +28,4 @@ public class EncryptionUtil {
         byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(encryptedData));
         return new String(decryptedBytes);
     }
-
-    public String mask(String cardNumber) {
-        return "**** **** **** " + cardNumber.substring(cardNumber.length() - 4);
-    }
 }
