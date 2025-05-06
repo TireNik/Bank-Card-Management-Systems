@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:6432/cards
+    username: user
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate.format_sql: true
+
+  liquibase:
+    change-log: classpath:db/db.changelog-master.yaml
+
+jwt:
+  secret: supersecretkeythatismorethan32byteslong
+  expiration: 3600000
+  issuer: bank-cards-app
+
+encryption:
+  key: your-32-byte-secret-key-here
