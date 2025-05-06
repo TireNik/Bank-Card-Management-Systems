@@ -19,3 +19,6 @@ jwt:
   secret: supersecretkeythatismorethan32byteslong
   expiration: 3600000
   issuer: bank-cards-app
+
+encryption:
+  key: your-32-byte-secret-key-here

@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -16,11 +15,9 @@ import org.springframework.http.MediaType;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 import ru.BankCardsApp;
-import ru.controller.CardController;
 import ru.dto.CardRequest;
 import ru.dto.CardResponse;
 import ru.dto.CardSearchCriteria;
-import ru.model.CardStatus;
 import ru.service.CardService;
 import ru.service.UserService;
 
@@ -31,6 +28,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.model.CardStatus.ACTIVE;
+import static ru.model.CardStatus.EXPIRED;
 
 @SpringBootTest(classes = BankCardsApp.class)
 @AutoConfigureMockMvc
@@ -56,7 +55,7 @@ class CardControllerTest {
                 "John Doe",
                 "**** **** **** 1234",
                 LocalDate.now().plusYears(1),
-                CardStatus.ACTIVE,
+                ACTIVE,
                 1000.00);
         Page<CardResponse> page = new PageImpl<>(List.of(card));
 
@@ -78,7 +77,7 @@ class CardControllerTest {
                 "John Doe",
                 "**** **** **** 5678",
                 LocalDate.now().plusYears(1),
-                CardStatus.ACTIVE,
+                ACTIVE,
                 1000.00);
 
         Mockito.when(cardService.createCard(any(CardRequest.class))).thenReturn(response);
@@ -106,13 +105,13 @@ class CardControllerTest {
                 "John Doe",
                 "**** **** **** 1234",
                 LocalDate.now().plusYears(1),
-                CardStatus.ACTIVE,
+                ACTIVE,
                 1000.00);
         Mockito.when(cardService.blockCard(1L)).thenReturn(response);
 
         mockMvc.perform(put("/cards/1/block"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.active").value(false));
+                .andExpect(jsonPath("$.status").value("ACTIVE"));
     }
 
     @Test
@@ -123,13 +122,13 @@ class CardControllerTest {
                 "John Doe",
                 "**** **** **** 1234",
                 LocalDate.now().plusYears(1),
-                CardStatus.EXPIRED,
+                EXPIRED,
                 1000.00);
         Mockito.when(cardService.activateCard(1L)).thenReturn(response);
 
         mockMvc.perform(put("/cards/1/activate"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.active").value(true));
+                .andExpect(jsonPath("$.status").value("EXPIRED"));
     }
 
     @Test
@@ -140,7 +139,7 @@ class CardControllerTest {
                 "John Doe",
                 "**** **** **** 1234",
                 LocalDate.now().plusYears(1),
-                CardStatus.ACTIVE,
+                ACTIVE,
                 1000.00);
         Mockito.when(cardService.getCardById(1L)).thenReturn(response);
 
